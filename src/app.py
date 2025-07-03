@@ -3,7 +3,7 @@ import tempfile
 
 import streamlit as st
 
-from util import ocr, gen_draft
+from util import ocr, gen_draft, dummy_gen_draft
 
 
 def main():
@@ -37,7 +37,10 @@ def main():
                 placeholder = st.empty()
                 draft_text = ""
 
-                for chunk in gen_draft(api_key, textbook):
+                # for chunk in gen_draft(api_key, textbook):
+                #     draft_text += chunk
+                #     placeholder.markdown(draft_text)
+                for chunk in dummy_gen_draft():
                     draft_text += chunk
                     placeholder.markdown(draft_text)
 
