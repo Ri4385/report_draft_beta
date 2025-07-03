@@ -44,7 +44,7 @@ def ocr(api_key: str, pdf_path: Path) -> str:
     Returns:
         textbook (str): OCR結果のテキスト
     """
-    return dummy_ocr()
+    # return dummy_ocr()
 
     genai.configure(api_key=api_key)
 
@@ -74,7 +74,7 @@ def gen_draft(api_key: str, textbook: str) -> Iterator[str]:
     Returns:
         draft (Iterator[str]): レポートドラフト
     """
-    return dummy_gen_draft()
+    # return dummy_gen_draft()
     genai.configure(api_key=api_key)
 
     prompt_instruction = dedent("""
