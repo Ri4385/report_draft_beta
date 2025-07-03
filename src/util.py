@@ -10,17 +10,12 @@ def dummy_ocr() -> str:
     Returns:
         textbook (str): OCR結果のテキスト
     """
-    exp_text_path = Path("data/ocr_out/ryutsu_ocr_gemini_20250703_055327.md")
-
-    # マークダウンデータを読み込む
-    with exp_text_path.open("r") as f:
-        markdown_text = f.read()
 
     import time
 
     time.sleep(5)
 
-    return markdown_text
+    return "aaaaaaaaaaa"
 
 
 def dummy_gen_draft() -> Iterator[str]:
@@ -28,15 +23,15 @@ def dummy_gen_draft() -> Iterator[str]:
     Returns:
         draft (Iterator[str]): レポートドラフトを1行ずつ返すイテレータ
     """
-    draft_path = Path("data/tmp/ryutu_draft_pro_kako_20250703_070701.md")
     import time
 
     time.sleep(5)
 
-    with draft_path.open("r") as f:
-        for line in f:
-            time.sleep(0.2)
-            yield line
+    f = ["avoubouvboaebovb\n"] * 100
+
+    for line in f:
+        time.sleep(0.2)
+        yield line
 
 
 def ocr(api_key: str, pdf_path: Path) -> str:
