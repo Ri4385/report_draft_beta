@@ -114,7 +114,7 @@ def gen_draft(api_key: str, textbook: str) -> Iterator[str]:
     {textbook}
     """)
 
-    model = genai.GenerativeModel("gemini-2.5-pro")
+    model = genai.GenerativeModel("gemini-2.5-flash")
 
     # ストリーミング対応
     response = model.generate_content(
