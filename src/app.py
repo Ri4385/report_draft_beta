@@ -1,9 +1,12 @@
 from pathlib import Path
 import tempfile
+import zipfile
+from io import BytesIO
 
 import streamlit as st
 
 from util import ocr, gen_draft, dummy_gen_draft
+from converter import convert_md_to_docx
 
 
 def main():
@@ -43,6 +46,42 @@ def main():
                 # for chunk in dummy_gen_draft():
                 #     draft_text += chunk
                 #     placeholder.markdown(draft_text)
+
+                # 一時ディレクトリでファイル生成
+                progress.info("Word文書を生成中です...")
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    tmpdir_path = Path(tmpdir)
+
+                    # text.md（実験テキスト）
+                    text_md_path = tmpdir_path / "text.md"
+                    text_md_path.write_text(textbook, encoding="utf-8")
+
+                    # report.md（レポートドラフト）
+                    report_md_path = tmpdir_path / "report.md"
+                    report_md_path.write_text(draft_text, encoding="utf-8")
+
+                    # report.docx（Word形式）
+                    report_docx_path = tmpdir_path / "report.docx"
+                    convert_md_to_docx(report_md_path, report_docx_path)
+
+                    # ZIPファイル作成
+                    zip_buffer = BytesIO()
+                    with zipfile.ZipFile(
+                        zip_buffer, "w", zipfile.ZIP_DEFLATED
+                    ) as zip_file:
+                        zip_file.write(text_md_path, "text.md")
+                        zip_file.write(report_md_path, "report.md")
+                        zip_file.write(report_docx_path, "report.docx")
+
+                    zip_buffer.seek(0)
+
+                    # ダウンロードボタン
+                    st.download_button(
+                        label="📥 レポート一式をダウンロード (ZIP)",
+                        data=zip_buffer,
+                        file_name="report_package.zip",
+                        mime="application/zip",
+                    )
 
                 # コピーボタン
                 st.components.v1.html(
